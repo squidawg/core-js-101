@@ -99,11 +99,28 @@ function getFastestPromise(array) {
  *    p.then((res) => {
  *      console.log(res) // => 6
  *    });
- *
+ * Promise.all(array).then((val) => Promise.resolve(val).reduce(action));;
  */
-function chainPromises(/* array, action */) {
-  throw new Error('Not implemented');
+
+function chainPromises(array, action) {
+  const all = (iter) => new Promise((resolve, reject) => {
+    const arr = [...iter];
+    let len = arr.length;
+    const results = [];
+    arr.map(Promise.resolve, Promise)
+      .map((p, i) => p.then((v) => {
+        results[i] = v;
+        //  eslint-disable-next-line no-plusplus
+        if (--len === 0) {
+          resolve(results);
+        }
+      }, reject));
+  });
+  // eslint-disable-next-line no-return-assign
+  return all(array.map((p) => p.catch(() => 0)))
+    .then((res) => res.reduce(action));
 }
+
 
 module.exports = {
   willYouMarryMe,
