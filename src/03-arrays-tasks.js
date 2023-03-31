@@ -453,7 +453,7 @@ function sortCitiesArray(arr) {
 function getIdentityMatrix(n) {
   const a = [...new Array(n)];
   return a.map(
-    (x, i) => a.map((y, k) => (i === k ? 1 : 0)),
+    (_, i) => a.map((y, k) => (i === k ? 1 : 0)),
   );
 }
 
@@ -524,8 +524,6 @@ function distinct(arr) {
 function group(/* array, keySelector, valueSelector */) {
   throw new Error('Not implemented');
 }
-
-
 /**
  * Projects each element of the specified array to a sequence
  * and flattens the resulting sequences into one array.
